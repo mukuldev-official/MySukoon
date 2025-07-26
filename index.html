@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySukoon - Kashish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <link rel="icon" type="image/png" href="assets/fav.png" />
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(to bottom right, #fab6f2, #fff);
+            color: #5a3e36;
+            min-height: 100vh;
+        }
+        
+        .dancing-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .elegant-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .heart {
+            position: relative;
+            
+            width: 100px;
+            height: 90px;
+            animation: heartbeat 1.5s infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 105, 140, 0.6));
+            margin: 0 auto 1rem;
+        }
+        
+        .heart:before, .heart:after {
+            position: absolute;
+            content: "";
+            left: 50px;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background: #ff698d;
+            border-radius: 50px 50px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+        
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .rose-petal {
+            position: absolute;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ff698d" d="M50,20 C60,0 80,10 80,30 C80,50 60,60 50,80 C40,60 20,50 20,30 C20,10 40,0 50,20 Z"/></svg>') no-repeat;
+            background-size: contain;
+            opacity: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .video-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .video-wrapper {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            box-shadow: 0 20px 40px -10px rgba(255, 105, 140, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 8px solid white;
+        }
+        
+        .video-wrapper:hover {
+            transform: rotateY(5deg) rotateX(3deg);
+        }
+        
+        .message-box {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 105, 140, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(255, 105, 140, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+        
+        .btn-glow {
+            background: linear-gradient(to right, #ff698d, #ff8da1);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 105, 140, 0.5);
+            transition: all 0.3s ease;
+            border: none;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 105, 140, 0.7);
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        .envelope {
+            width: 200px;
+            height: 120px;
+            background: #ffd6de;
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .envelope:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 70px solid #ffb7c5;
+            transform-origin: top;
+            transform: rotateX(0deg);
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        
+        .envelope.open:before {
+            transform: rotateX(180deg);
+        }
+        
+        .envelope:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 70px solid #ffa5b6;
+            z-index: 4;
+        }
+        
+        .letter {
+            position: absolute;
+            background: white;
+            width: 180px;
+            height: 240px;
+            left: 10px;
+            top: 10px;
+            border-radius: 3px;
+            z-index: 3;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.25rem;
+            text-align: center;
+        }
+        
+        .envelope.open .letter {
+            transform: translateY(-120px);
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 1rem;
+            padding-bottom: 2.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: rotate(-5deg);
+            transition: all 0.3s ease;
+            width: 200px;
+            margin: 1.25rem auto;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+            display: block;
+        }
+        
+        .polaroid-caption {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            color: #ff698d;
+            margin-top: 0.625rem;
+            font-size: 1.2rem;
+        }
+        
+        .memory-box {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 0.625rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .memory-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .sparkle {
+            position: absolute;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="%23ff698d" d="M12,2L9,11L2,12L9,13L12,22L15,13L22,12L15,11L12,2Z" /></svg>') no-repeat;
+            background-size: contain;
+            opacity: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 640px) {
+            .content {
+                padding: 1rem;
+            }
+            
+            .message-box {
+                padding: 1rem;
+            }
+            
+            .memory-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col my-[100px] items-center justify-center p-4">
+    <div id="particles-js"></div>
+    <div class="content">
+        <!-- Animated envelope with letter -->
+         <div class="envelope mb-12" id="envelope">
+            <div class="letter flex justify-centre">
+                <p class="dancing-font text-3xl text-pink-600">For Kashish</p>
+                <p class="text-sm mt-2 text-pink-400">Open me, my love</p>
+            </div>
+        </div>
+        
+        <!-- Main content (initially hidden) -->
+        <div id="mainContent" class="hidden w-full">
+            <!-- Header with animated heart -->
+            <div class="flex flex-col items-center mb-8">
+                <!-- <div class="heart mb-4"></div> -->
+                 <span></span>
+                <h1 class="text-4xl md:text-5xl font-bold dancing-font mb-2 text-pink-600">My Beautiful Kashish</h1>
+                <p class="text-xl text-pink-500 elegant-font">A love letter from Deepanshu</p>
+                <span></span>
+            </div>
+            <h2></h2>
+            <div class="elegant-photo-frame mb-8 relative max-w-xs mx-auto">
+    <div class="photo-container relative z-10">
+        <img src="assets/her1.png" alt="Your beautiful smile" 
+             class="w-full h-72 object-cover rounded-lg shadow-md border-4 border-white">
+        <div class="floral-decoration absolute -top-6 -left-6 z-0 w-24 h-24 opacity-80">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path fill="#ff698d" d="M50,20 C60,0 80,10 80,30 C80,50 60,60 50,80 C40,60 20,50 20,30 C20,10 40,0 50,20 Z" transform="rotate(45 50 50)"/>
+            </svg>
+        </div>
+    </div>
+    <div class="caption mt-6 text-center dancing-font text-pink-600 text-xl bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-sm inline-block border border-pink-200">
+        My Cutest Parii..
+    </div>
+</div>
+           
+            <!-- Main message with floating animation -->
+            <div class="message-box p-6 md:p-8 mb-8 w-full floating">
+                <p class="text-lg md:text-xl mb-4 leading-relaxed">
+                    "Mera Dil Tujhse Kuch Kahna Chahta Hai- Jub bhi me teri aankho ko dekhta hu to mujhe duniya ki sabse sudar palke dikti hai aur unme ek sundar si gehri aankhe jisme me Puri life Doob jauu.. Aur Jub tu Bindi lagati hai to Mera dil dhak dhak karta sunaii deta hai aur jub tu apne hairs ko kholkar raakhti hai to Mera man karta haai ki sari tameej bhoolkar bss tujhe god me leke bhaag jauu aur humesha apne se hug karke rakhuu.. Mujhe krishna ji ne sabse Pyari aur deserving radhha di hai bss me humesha apni aankho se bss usse dekhna chahta hu.."
+                </p>
+                
+                <p class="text-2xl md:text-3xl dancing-font text-pink-600 font-bold mt-6">
+                    I'm completely, hopelessly in love with you, Kashish.
+                </p>
+            </div>
+            
+            <!-- Video section -->
+            <div class="video-container mb-8">
+                <div class="video-wrapper">
+                    <video id="confessionVideo" class="w-full" poster="https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" controls>
+                        <source src="assets/part1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                        <span>Part 1</span>
+                    </video>
+                </div>
+                <p class="text-pink-500 mt-4 elegant-font text-center">This video holds my heart's confession</p>
+            </div>
+            <!-- Video section -->
+            <div class="video-container mb-8">
+                <div class="video-wrapper">
+                    <video id="confessionVideo" class="w-full" poster="https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" controls>
+                        <source src="assets/part2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <span>Part 2</span>
+                </div>
+                <p class="text-pink-500 mt-4 elegant-font text-center">Final Confession.</p>
+            </div>
+            
+            <!-- Interactive button -->
+            <button id="playBtn" class="btn-glow mx-auto block">
+                Play My Heart's Message
+            </button>
+            
+            <!-- Special memories section -->
+            <div class="mb-8 w-full">
+                <a href="https://www.instagram.com/1x_ayushi_/">
+                <!-- Instagram Story/Post Section -->
+<div class="instagram-section relative w-full max-w-md mx-auto overflow-hidden rounded-2xl shadow-2xl">
+  <!-- Background with soft gradient -->
+  <div class="absolute inset-0 bg-gradient-to-br from-pink-100 to-pink-50"></div>
+  
+  <!-- Decorative elements -->
+  <div class="absolute top-0 left-0 w-full h-full opacity-20">
+    <div class="absolute top-10 left-10 w-20 h-20 rounded-full bg-pink-300 blur-xl"></div>
+    <div class="absolute bottom-10 right-10 w-24 h-24 rounded-full bg-pink-200 blur-xl"></div>
+  </div>
+  
+  <!-- Main content -->
+  <div class="relative z-10 p-8 text-center">
+    <!-- Heart icon -->
+    <div class="heart-icon mx-auto mb-6 w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+      </svg>
+    </div>
+    
+    <!-- Main text -->
+    <h2 class="text-3xl font-bold text-pink-700 mb-4 font-serif">Kashish,</h2>
+    <p class="text-xl text-pink-600 mb-6 leading-relaxed">
+      Every moment with you feels like a beautiful dream I never want to wake up from.
+    </p>
+    
+    <!-- Polaroid-style photo frame -->
+    <div class="polaroid-frame mx-auto w-64 p-3 bg-white shadow-lg rotate-2 transform hover:rotate-0 transition-transform duration-300">
+      <div class="relative overflow-hidden h-64 w-full">
+        <!-- Replace with your image -->
+        <img src="assets/her.png" alt="Kashish" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+      </div>
+      <div class="text-center py-3 font-handwriting text-pink-600 text-lg">
+        My Favorite Person
+      </div>
+    </div>
+    
+    <!-- Final message -->
+    <p class="text-pink-700 mt-8 text-lg font-medium">
+      I'm so grateful you're in my life ❤️
+    </p>
+    <p class="text-pink-500 mt-2 text-sm">
+      - Deepanshu
+    </p>
+  </div>
+  
+  <!-- Instagram decorations -->
+  <div class="absolute top-4 right-4 flex space-x-2">
+    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+  </div>
+</div>
+
+<style>
+  .font-handwriting {
+    font-family: 'Dancing Script', cursive;
+  }
+  
+  .heart-icon {
+    animation: heartbeat 1.5s infinite;
+  }
+  
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  .polaroid-frame {
+    border: 8px solid white;
+    border-bottom: 30px solid white;
+  }
+</style>
+            </a></div>
+            
+            <!-- Final message -->
+            <div class="message-box p-6 w-full">
+                <p class="text-lg md:text-xl mb-4">
+                    You've painted my world with colors I never knew existed. Whatever happens next, I needed you to know how incredibly special you are to me.
+                </p>
+                <div class="flex justify-center items-center mt-6">
+                    <!-- <div>
+                        <div class="heart" style="width: 30px; height: 35px;"></div>
+                    </div> -->
+                    <p class="text-2xl dancing-font text-pink-600">
+                        Forever yours,<br>Deepanshu
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize particles.js with softer colors
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix for particles.js ID
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 60,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ff698d"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffb7c5",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.3
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+            // Create falling rose petals
+            function createPetals() {
+                const container = document.querySelector('body');
+                const petalCount = 20;
+                
+                for (let i = 0; i < petalCount; i++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'rose-petal';
+                    
+                    // Random size between 15px and 35px
+                    const size = Math.random() * 20 + 15;
+                    petal.style.width = `${size}px`;
+                    petal.style.height = `${size}px`;
+                    
+                    // Random position
+                    petal.style.left = `${Math.random() * 100}vw`;
+                    petal.style.top = `-${size}px`;
+                    
+                    container.appendChild(petal);
+                    
+                    // Animate petal falling
+                    animatePetal(petal);
+                }
+            }
+            
+            function animatePetal(petal) {
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * 5;
+                const rotation = Math.random() * 360;
+                
+                // Set initial rotation
+                petal.style.transform = `rotate(${rotation}deg)`;
+                
+                gsap.to(petal, {
+                    y: `+=${window.innerHeight + 100}`,
+                    x: `+=${(Math.random() - 0.5) * 200}`,
+                    rotation: rotation + (Math.random() * 180 - 90),
+                    opacity: 0.6,
+                    duration: duration,
+                    delay: delay,
+                    ease: "none",
+                    onComplete: () => {
+                        // Reset petal to top
+                        petal.style.top = `-${parseInt(petal.style.width)}px`;
+                        petal.style.left = `${Math.random() * 100}vw`;
+                        petal.style.opacity = '0';
+                        
+                        // Animate again
+                        animatePetal(petal);
+                    }
+                });
+            }
+            
+            // Create sparkles
+            function createSparkles() {
+                const container = document.querySelector('body');
+                const sparkleCount = 10;
+                
+                for (let i = 0; i < sparkleCount; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    
+                    // Random size between 10px and 20px
+                    const size = Math.random() * 10 + 10;
+                    sparkle.style.width = `${size}px`;
+                    sparkle.style.height = `${size}px`;
+                    
+                    // Random position
+                    sparkle.style.left = `${Math.random() * 100}vw`;
+                    sparkle.style.top = `${Math.random() * 100}vh`;
+                    
+                    container.appendChild(sparkle);
+                    
+                    // Animate sparkle
+                    animateSparkle(sparkle);
+                }
+            }
+            
+            function animateSparkle(sparkle) {
+                const duration = Math.random() * 2 + 1;
+                const delay = Math.random() * 3;
+                
+                gsap.to(sparkle, {
+                    opacity: 0.8,
+                    scale: 1.5,
+                    duration: duration/2,
+                    yoyo: true,
+                    repeat: -1,
+                    delay: delay,
+                    ease: "sine.inOut"
+                });
+            }
+            
+            // Start animations after a delay
+            setTimeout(createPetals, 1000);
+            setTimeout(createSparkles, 1500);
+            
+            // Envelope interaction
+            const envelope = document.getElementById('envelope');
+            const mainContent = document.getElementById('mainContent');
+            
+            if (envelope && mainContent) {
+                envelope.addEventListener('click', function() {
+                    envelope.classList.add('open');
+                    
+                    // After envelope opens, reveal main content
+                    setTimeout(() => {
+                        mainContent.classList.remove('hidden');
+                        gsap.from(mainContent, {
+                            opacity: 0,
+                            y: 20,
+                            duration: 1,
+                            ease: "power2.out"
+                        });
+                        
+                        // Scroll to main content
+                        mainContent.scrollIntoView({ behavior: 'smooth' });
+                    }, 800);
+                });
+            }
+            
+            // Video play button
+            const playBtn = document.getElementById('playBtn');
+            const video = document.getElementById('confessionVideo');
+            
+            if (playBtn && video) {
+                playBtn.addEventListener('click', function() {
+                    if (video.paused) {
+                        video.play();
+                        playBtn.textContent = 'Pause Video';
+                        
+                        // Add heart particles effect when video plays
+                        gsap.to(playBtn, {
+                            scale: 1.1,
+                            boxShadow: '0 0 30px rgba(255, 105, 140, 0.7)',
+                            duration: 0.3
+                        });
+                        
+                        // Create extra petals when video plays
+                        createPetals();
+                    } else {
+                        video.pause();
+                        playBtn.textContent = 'Continue My Heart\'s Message';
+                        
+                        gsap.to(playBtn, {
+                            scale: 1,
+                            boxShadow: '0 0 15px rgba(255, 105, 140, 0.5)',
+                            duration: 0.3
+                        });
+                    }
+                });
+            }
+            
+            // Text animations for main content
+            const animateContent = () => {
+                gsap.from('h1', {
+                    duration: 1.5,
+                    y: -50,
+                    opacity: 0,
+                    ease: "back.out(1.7)"
+                });
+                
+                gsap.from('.heart', {
+                    duration: 1.5,
+                    scale: 0,
+                    opacity: 0,
+                    ease: "elastic.out(1, 0.5)",
+                    delay: 0.5
+                });
+                
+                gsap.from('.polaroid', {
+                    duration: 1,
+                    rotation: -15,
+                    opacity: 0,
+                    delay: 1
+                });
+                
+                gsap.from('.message-box', {
+                    duration: 1,
+                    y: 50,
+                    opacity: 0,
+                    stagger: 0.3,
+                    delay: 1.5
+                });
+                
+                gsap.from('.video-container', {
+                    duration: 1,
+                    y: 50,
+                    opacity: 0,
+                    delay: 2
+                });
+                
+                gsap.from('#playBtn', {
+                    duration: 1,
+                    scale: 0,
+                    opacity: 0,
+                    ease: "back.out(1.7)",
+                    delay: 2.5
+                });
+                
+                gsap.from('.memory-box', {
+                    duration: 0.8,
+                    y: 30,
+                    opacity: 0,
+                    stagger: 0.2,
+                    delay: 3
+                });
+            };
+            
+            // Set up observer to animate when main content comes into view
+            if (mainContent) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateContent();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                observer.observe(mainContent);
+            }
+        });
+    </script>
+    
+</body>
+</html>
